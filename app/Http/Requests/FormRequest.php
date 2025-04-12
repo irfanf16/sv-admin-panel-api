@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Http\Requests;
+
+class FormRequest extends AbstractFormRequest
+{
+    public function rules()
+    {
+        return [
+            'name' => 'required|max:255|alpha_dash|unique:portal_blocks,name,'.$this->id,
+            'status.*' => 'boolean',
+            'body.*' => 'nullable',
+        ];
+    }
+}

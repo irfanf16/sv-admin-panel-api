@@ -1,0 +1,125 @@
+image: atlassian/default-image:2
+
+pipelines:
+  branches:
+    qa:
+      - step:
+          name: Build and Push to ECR
+          script:
+            - echo "Creating .env file with repository variables"
+            - |
+              cat << EOF > .env
+              APP_NAME=https://qa-backofficeapi.staffviz.io/
+              APP_STAFFVIZ_URL=https://qa-app.staffviz.io
+              STAFFVIZ_FRONTEND_URL=https://qa.staffviz.io
+              APP_ENV=local
+              APP_KEY=base64:/Zxy2sTedSFt/kEnnit10XyJytMB7UywdI9WQ5cdAVo=
+              JS_KEY=ABC56EABCDDEF123ERD4EF123ERD456E
+              APP_DEBUG=true
+              APP_URL=https://qa-backofficeapi.staffviz.io
+              ENC_KEY=fd434ed844ecb38101904d427fdb0aa0
+              LOG_CHANNEL=daily
+              LOG_DEPRECATIONS_CHANNEL=null
+              LOG_LEVEL=debug
+              DB_HOST=${QA_DB_HOST}
+              DB_CONNECTION=mysql
+              # DB_HOST=10.0.0.141
+              DB_PORT=3307
+              DB_DATABASE=tth_master_db
+              DB_USERNAME=${QA_DB_USERNAME}
+              DB_PASSWORD=${QA_DB_PASSWORD}
+              BROADCAST_DRIVER=log
+              CACHE_DRIVER=file
+              FILESYSTEM_DISK=local
+              QUEUE_CONNECTION=sync
+              SESSION_DRIVER=file
+              SESSION_LIFETIME=120
+              MEMCACHED_HOST=127.0.0.1
+              #REDIS_HOST=127.0.0.1
+              REDIS_HOST=redis
+              REDIS_PASSWORD=null
+              REDIS_PORT=6379
+              MAIL_MAILER=smtp
+              MAIL_HOST=smtp.office365.com
+              MAIL_PORT=587
+              MAIL_USERNAME=crecentechtth1@crecentech.com
+              MAIL_PASSWORD="F(138118475972at"
+              MAIL_ENCRYPTION=tls
+              MAIL_FROM_ADDRESS=crecentechtth1@crecentech.com
+              MAIL_FROM_NAME="StaffViz"
+              CEO_EMAIL ="m.ilyas@crecentech.com"
+              
+              APP_IMAGE_ENVIRONMENT=local # s3 or local
+              AWS_ACCESS_KEY_ID=${QA_AWS_ACCESS_KEY_ID_S3}
+              AWS_SECRET_ACCESS_KEY=${QA_AWS_SECRET_ACCESS_KEY_S3}
+              AWS_DEFAULT_REGION=us-east-2
+              AWS_BUCKET=crecentech1.tth.pro
+              AWS_BUCKET_URI=/
+              AWS_BASE_IMAGE_URL=https://s3.us-east-2.amazonaws.com/crecentech1.tth.pro/
+
+              AWS_USE_PATH_STYLE_ENDPOINT=false
+              PUSHER_PORT=443
+              PUSHER_SCHEME=https
+              PUSHER_APP_CLUSTER=mt1
+              STORAGE_DELETE_FROM_QA=true
+              COMPANY_DELETE_ENDPOINT='http://103.225.220.178:8089/api/trial'
+              WEB_PORTAL_API='https://qa-app.staffviz.io/login/api'
+              VITE_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
+              VITE_PUSHER_HOST="${PUSHER_HOST}"
+              VITE_PUSHER_PORT="${PUSHER_PORT}"
+              VITE_PUSHER_SCHEME="${PUSHER_SCHEME}"
+              VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
+              ENCRYPTION_KEY_FOR_AGENT_LOGIN="Qdtk5nvoLsFT0ejrKqDtS1tUU2x2tLFP"
+              INTERNAL_SYSTEM_COMMUNICATION='NoYWh6YWRAY3JlY.OiJIUzUxMiJ9J6Ln2VudGVeyJeHAiOjE2MzMwMTTIsImlhdCI6I5hbGcijaC5jb20iLCJlNMn0.blacEAK6gl6x1TYzMjk5NDk1Mv9i42HZnaKbZKUXeb16wdf_UF9Ec4fYM35sWqzIsbFksH0FQowbZKUXeb16wdf_UF9E'
+
+              STRIPE_PRIVATE_KEY=sk_test_51LA9o4GN1EGOh1ni2sghY7ntxD7iKreSh7pu9LgZglbSXBJbnIVHafmUmAfj7T0p7y9Z87FW2zLbw5vDevFJbUTD00rfNZAxMS
+              STRIPE_ENDPOINT_SECRET=whsec_2bxWTL1tAGX8zlt7iaWqHm0teNYDY1Dy
+              SUPPORT_STAFFVIZ_EMAIL="support@staffviz.com"
+              KAFKA_NOTIFICATION_API="http://103.225.220.178:8084/notification/receive"
+              KAFKA_NOTIFICATION_AUTH_KEY=ZDj6eRZFZf5v6eI17QaSYV6JjUnpuwbHYswZepYf5aNLjxv5dCc=
+              TRACKDESK_TENANTID="task-tracker"
+              TRACKDESK_API_KEY="e8NpezHl1w04dBomBBHWsj44VudTx8fL"
+              FIRSTPROMOTER_API_KEY="a248e28e483cabe14ab436319d4d7ecf"
+              EOF
+            - echo "Contents of .env file:"
+            - cat .env
+            - echo ${BITBUCKET_SSH_KEY_FILE}
+            - apt-get update
+            - apt-get install -y awscli
+
+            - BRANCH_NAME=${BITBUCKET_BRANCH}
+            - echo "Building Docker image"
+            - docker build -t staginstaffviz/staffviz:latest .
+            - docker tag staginstaffviz/staffviz:latest staginstaffviz/staffviz:admin-be-$BRANCH_NAME
+            - echo "$DOCKERHUB_PASSWORD_STAGE" | docker login -u "$DOCKERHUB_USERNAME_STAGE" --password-stdin
+
+            - docker push staginstaffviz/staffviz:admin-be-$BRANCH_NAME
+
+
+          services:
+            - docker
+      - step:
+           name: Deploy to ${BITBUCKET_BRANCH} Server
+           script:
+             - HOST_USER=qa
+             - HOST_IP=103.225.220.178
+             - apt-get update -y
+             - apt-get install sshpass -y
+             - echo $ssh_key > privatekey
+             - chmod 400 privatekey
+             - sshpass -p "$HOST_PASSWORD" ssh -o StrictHostKeyChecking=no "$HOST_USER@$HOST_IP" "
+                  cd /home/$HOST_USER/devops &&
+                  echo "$DOCKERHUB_PASSWORD_STAGE" | docker login -u "$DOCKERHUB_USERNAME_STAGE" --password-stdin &&
+                  docker rmi -f staginstaffviz/staffviz:admin-be-qa &&
+                  docker-compose up -d admin_be"
+
+
+           services:
+            - docker
+
+
+
+definitions:
+  services:
+    docker:
+      memory: 2048

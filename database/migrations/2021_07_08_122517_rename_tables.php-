@@ -1,0 +1,48 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class RenameTables extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::rename('teams', 'groups');
+        Schema::rename('team_members', 'group_members');
+
+        Schema::table('groups', function (Blueprint $table) {
+            $table->renameColumn('team_name', 'group_name');
+            $table->renameColumn('team_lead', 'group_lead');
+        });
+
+        Schema::table('group_members', function (Blueprint $table) {
+            $table->renameColumn('team_id', 'group_id');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::rename('groups', 'teams');
+        Schema::rename('group_members', 'team_members');
+
+        Schema::table('teams', function (Blueprint $table) {
+            $table->renameColumn('group_name', 'team_name');
+            $table->renameColumn('group_lead', 'team_lead');
+        });
+
+        Schema::table('team_members', function (Blueprint $table) {
+            $table->renameColumn('group_id', 'team_id');
+        });
+    }
+}

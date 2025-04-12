@@ -1,0 +1,36 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class AddShiftIdInUsersTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        if(Schema::hasColumn('users', 'shift_id') === false){
+            Schema::table('users', function (Blueprint $table) {
+                $table->integer('shift_id')->nullable()->after('current_course_id');
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        if(Schema::hasColumn('users', 'shift_id')){
+            Schema::table('users', function (Blueprint $table) {
+                $table->dropColumn('shift_id');
+            });
+        }
+    }
+}

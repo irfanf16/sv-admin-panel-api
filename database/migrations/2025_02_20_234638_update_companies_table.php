@@ -1,0 +1,34 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasColumn('companies', 'timelogs_deletion')) {
+            Schema::table('companies', function (Blueprint $table) {
+                $table->integer('timelogs_deletion')->default(0);
+                $table->integer('snapshot_deletion')->default(0);
+                $table->integer('project_archive')->default(0);
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('companies', function (Blueprint $table) {
+            $table->dropColumn(['timelogs_deletion']);
+            $table->dropColumn(['snapshot_deletion']);
+            $table->dropColumn(['project_archive']);
+        });
+    }
+};

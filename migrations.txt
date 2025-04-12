@@ -1,0 +1,120 @@
+#!/bin/sh
+
+# Define log file
+LOGFILE="migrations3.log"
+
+# Create a new log file or clear the existing one
+echo "Migration Log - $(date)" > "$LOGFILE"
+
+# Function to log both stdout and stderr
+log_command() {
+  "$@" >> "$LOGFILE" 2>&1
+}
+
+# Run the specified migrations and log each command
+# Add the --force option to bypass confirmation prompts
+
+log_command php artisan migrate --force --path=/database/migrations-default/2014_10_12_000000_create_users_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2014_10_12_100000_create_password_reset_tokens_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2016_06_01_000001_create_oauth2_auth_codes_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2016_06_01_000002_create_oauth2_access_tokens_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2016_06_01_000003_create_oauth2_refresh_tokens_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2016_06_01_000004_create_oauth2_clients_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2019_08_19_000000_create_failed_jobs_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2019_12_14_000001_create_personal_access_tokens_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2019_12_16_000001_create_blocks_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2019_12_16_000001_create_files_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2019_12_16_000001_create_menus_tables.php
+log_command php artisan migrate --force --path=/database/migrations-default/2019_12_16_000001_create_model_has_files_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2019_12_16_000001_create_pages_tables.php
+log_command php artisan migrate --force --path=/database/migrations-default/2019_12_16_000001_create_settings_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2019_12_16_000001_create_tags_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2019_12_16_000001_create_taxonomies_tables.php
+log_command php artisan migrate --force --path=/database/migrations-default/modify_price_type_rules_in_caategories/2024_04_25_092722_modify_price_type.php
+log_command php artisan migrate --force --path=./database/migrations-default/2019_12_16_000001_create_translations_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2021_03_19_095734_create_module_features_list_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2021_03_19_095734_create_module_features_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2021_03_19_095734_create_modules_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2021_03_19_095734_create_products_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2021_07_30_100821_create_jobs_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2021_07_30_123715_create_failed_jobs_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2023_07_26_060449_system_info_to_personal_access_tokens.php
+log_command php artisan migrate --force --path=/database/migrations-default/2023_11_30_084722_add_formation_type_to_companies_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2023_11_30_084722_add_plan_id_to_companies_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_01_31_072610_add_column_to_module_rules_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_02_13_125250_create_courses_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_02_13_130054_course_articles.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_02_13_133331_articles.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_02_13_133617_article_pages.php
+
+log_command php artisan migrate --force --path=/database/migrations-default/2024_03_11_095734_create_category_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_03_12_072610_add_column_stripe_id_to_user_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_03_12_072610_add_column_to_companies_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_03_15_095734_add_rule_module_features_list_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_03_25_095734_add_status_module_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_03_26_095734_create_invoice_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_03_26_095734_update_price_type_field_categories_table.php
+
+log_command php artisan migrate --force --path=/database/migrations-default/2024_04_09_095734_create_JavaClientRelease_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_04_22_095151_add_published_column_to_catgory_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_04_30_095734_add_price_id_company_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_05_10_095734_create_talk_to_sales_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_05_15_095734_change_column_type_url_exipry.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_05_20_095734_create_category_features_list_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_05_20_095734_create_category_features_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_05_27_095734_add_dependent_module_id_module_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_06_13_111110_creat_emails_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_06_20_095734_add_grace_period_company_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_07_02_110032_add_number_of_employees_to_talk_to_sales.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_07_05_112719_create_configurations_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_07_15_095734_update_grace_period_company_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_07_18_104429_add_payment_status_and_update_grace_period_type.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_07_19_135638_add_columns_to_email_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_07_25_094636_add_column_in_javaclient_release.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_07_25_095734_grace_period_start_date_company_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_07_29_095734_grace_period_blocked_by_super_admin_company_users_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_07_29_113913_add_columns_to_companies_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_07_30_112719_create_subscriptions_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_08_01_113913_add_column_closure_plan_to_companies_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_08_08_113913_add_column_grace_period_name_to_companies_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_08_09_113913_add_column_label_to_portal_settings_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_08_19_112231_add_new_enum_rules_in_emails_table.php
+log_command php artisan migrate --force --path=/database/migrations-default/2024_08_22_133617_create_user_subscription_details_table.php
+log_command php artisan migrate --force --path=database/migrations-default/2024_08_28_095100_change_column_type_emails.php
+log_command php artisan migrate --force --path=database/migrations-default/2024_09_02_104456_create_company_close_account_table.php
+log_command php artisan migrate --force --path=database/migrations-default/2024_09_02_141851_add_colmuns_to_products_table.php
+log_command php artisan migrate --force --path=database/migrations-default/2024_09_03_091949_add_column_filter_to_close_account_table.php
+log_command php artisan migrate --force --path=database/migrations-default/2024_09_06_102221_add_columns_to_emails_table.php
+log_command php artisan migrate --force --path=database/migrations-default/2024_09_13_130231_add_new_field_payment_status_company_table.php
+log_command php artisan migrate --force --path=database/migrations-default/2024_09_06_104456_create_affiliate_table.php
+log_command php artisan migrate --force --path=database/migrations-default/2024_10_02_134800_add_columns_to_candidate_docs_table.php
+log_command php artisan migrate --force --path=database/migrations-default/2024_09_27_122320_add_columns_to_candidate_info_table.php
+log_command php artisan migrate --force --path=database/migrations-default/2024_09_27_114740_add_columns_to_companies_users_table.php
+log_command php artisan migrate --force --path=database/migrations-default/2024_09_27_123637_add_field_web_and_app_tracking_table.php
+log_command php artisan migrate --force --path=database/migrations-default/2024_09_27_123710_add_field_company_users_table.php
+log_command php artisan migrate --force --path=database/migrations-default/2024_10_10_084343_add_column_sorting_module_feature_list.php
+log_command php artisan migrate --force --path=database/migrations-default/2024_10_11_112249_add_columns_to_companies_users_table.php
+log_command php artisan migrate --force --path=database/migrations-default/2024_10_14_110045_add_column_to_category_feature_list_table.php
+log_command php artisan migrate --force --path=database/migrations-default/2024_10_28_053928_add_advocate_column_to_companies.php
+log_command php artisan migrate --force --path=database/migrations-default/2024_10_24_073836_create_role_types_table.php
+log_command php artisan migrate --force --path=database/migrations-default/2024_11_13_103406_add_image_column_users_table.php
+log_command php artisan migrate --force --path=database/migrations-default/2024_11_21_070836_add_column_plan_users_companies_table.php
+log_command php artisan migrate --force --path=database/migrations-default/2024_12_12_104456_create_chat_bot_client_table.php
+log_command php artisan migrate --force --path=database/migrations-default/2024_12_18_131439_create_new_table_web_app_tracking_domain.php
+log_command php artisan migrate --force --path=database/migrations-default/2025_02_20_234616_update_product_table.php
+log_command php artisan migrate --force --path=database/migrations-default/2025_02_20_234638_update_companies_table.php
+log_command php artisan migrate --force --path=database/migrations-default/2025_02_21_001358_create_deletion_log_table.php
+log_command php artisan migrate --force --path=database/migrations-default/2025_03_07_082811_create_deletion_stats_table.php
+log_command php artisan migrate --force --path=database/migrations-default/2025_03_19_105951_add_column_companies_table_in_company_db.php
+log_command php artisan migrate --force --path=database/migrations-default/2025_03_21_092314_create_table_company_configuration.php
+log_command php artisan migrate --force --path=database/migrations-default/2025_03_26_075724_create_addons_histories_table.php
+
+# Log custom command output
+log_command php artisan custommigrationtth
+
+# Indicate completion in the log
+echo "Migrations completed - $(date)" >> "$LOGFILE"
+
+# Display a message to the console
+echo "Migrations completed. Check the log file: $LOGFILE"
+

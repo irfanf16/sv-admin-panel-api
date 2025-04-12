@@ -1,0 +1,14 @@
+{
+    "Contacts": true,
+    "Users": true,
+    "Files": true,
+    "Dashboard": true,
+    "Blog": true,
+    "Support": true,
+    "PlansAndPackages": false,
+    "Plans": true,
+    "Articles": true,
+    "Api": true,
+    "Settings": true,
+    "Affiliate": true
+}
